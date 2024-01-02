@@ -1,4 +1,5 @@
-﻿using System.Net.Http;
+﻿using System.Linq;
+using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using YoutubeExplode.Bridge;
@@ -49,6 +50,10 @@ internal class SearchController(HttpClient http)
         using var response = await http.SendAsync(request, cancellationToken);
         response.EnsureSuccessStatusCode();
 
-        return SearchResponse.Parse(await response.Content.ReadAsStringAsync(cancellationToken));
+        string raw = await response.Content.ReadAsStringAsync(cancellationToken);
+        SearchResponse parsedResponse = SearchResponse.Parse(raw);
+        //var dummy = parsedResponse.Channels.Select(channel => channel.SubscriberCount).ToList(); // Forces evaluation of SubscriberCount
+
+        return parsedResponse;
     }
 }

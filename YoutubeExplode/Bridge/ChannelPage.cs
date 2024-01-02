@@ -32,7 +32,10 @@ internal partial class ChannelPage(IHtmlDocument content)
             if (metaTag != null)
             {
                 var attributeContent = metaTag.GetAttribute("content");
-                if (attributeContent != null && ulong.TryParse(attributeContent, out var subscriberCount))
+                if (
+                    attributeContent != null
+                    && ulong.TryParse(attributeContent, out var subscriberCount)
+                )
                 {
                     return subscriberCount;
                 }
@@ -40,7 +43,6 @@ internal partial class ChannelPage(IHtmlDocument content)
             return null;
         }
     }
-
 }
 
 internal partial class ChannelPage

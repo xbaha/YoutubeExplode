@@ -168,7 +168,6 @@ internal partial class SearchResponse
 
 internal partial class SearchResponse
 {
-
     public class ChannelData(JsonElement content)
     {
         [Lazy]
@@ -195,16 +194,40 @@ internal partial class SearchResponse
                 .ToArray() ?? Array.Empty<ThumbnailData>();
 
         [Lazy]
-        public ulong? SubscriberCount =>
-            content
-                .GetPropertyOrNull("videoCountText")
-                ?.GetPropertyOrNull("simpleText")
-                ?.GetString()
-                ?.ConvertSubscriberCountTextToNumber();
+        public ulong? SubscriberCount
+        {
+            get
+            {
+                var subscriberText = content
+                    .GetPropertyOrNull("subscriberCountText")
+                    ?.GetPropertyOrNull("simpleText")
+                    ?.GetString();
+                var videoText = content
+                    .GetPropertyOrNull("videoCountText")
+                    ?.GetPropertyOrNull("simpleText")
+                    ?.GetString();
+
+                // Check if the word "subscribers" is in the text
+                bool hasSubscriberWord(string? text) => text?.Contains("subscribers") == true;
+
+                string? countText = null;
+
+                // Prioritize subscriberCountText over videoCountText when both are present
+                if (hasSubscriberWord(subscriberText))
+                {
+                    countText = subscriberText;
+                }
+                else if (hasSubscriberWord(videoText))
+                {
+                    countText = videoText;
+                }
+
+                // Convert the count text to a number
+                return countText?.ConvertSubscriberCountTextToNumber();
+            }
+        }
     }
-
 }
-
 
 /// <summary>
 /// Contains extension methods for the string class.
@@ -230,11 +253,11 @@ public static class StringExtensions
 
         // Define the multipliers for K, M, and B.
         var multipliers = new Dictionary<char, ulong>
-            {
-                { 'K', 1_000 },
-                { 'M', 1_000_000 },
-                { 'B', 1_000_000_000 }
-            };
+        {
+            { 'K', 1_000 },
+            { 'M', 1_000_000 },
+            { 'B', 1_000_000_000 }
+        };
 
         // Check if the text ends with K, M, or B (case-insensitive) and multiply accordingly.
         char lastChar = filteredText.LastOrDefault();
@@ -267,7 +290,16 @@ public static class StringExtensions
     }
 }
 
+//internal partial class SearchResponse
+//{
+//    public static SearchResponse Parse(string raw) => new(Json.Parse(raw));
+//}
+
 internal partial class SearchResponse
 {
-    public static SearchResponse Parse(string raw) => new(Json.Parse(raw));
+    public static SearchResponse Parse(string raw)
+    {
+        var parsedJson = Json.Parse(raw);
+        return new SearchResponse(parsedJson);
+    }
 }

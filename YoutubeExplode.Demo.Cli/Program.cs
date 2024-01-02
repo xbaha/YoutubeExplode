@@ -14,8 +14,11 @@ public static class Program
     public static async Task Main()
     {
         Console.Title = "YoutubeExplode Demo";
+        await test();
 
         var youtube = new YoutubeClient();
+        // Arrange
+
 
         // Get the video ID
         Console.Write("Enter YouTube video ID or URL: ");
@@ -45,5 +48,14 @@ public static class Program
 
         Console.WriteLine("Done");
         Console.WriteLine($"Video saved to '{fileName}'");
+    }
+
+    static async Task test()
+    {
+        var youtube = new YoutubeClient();
+        await foreach (var channel in youtube.Search.GetChannelsAsync("undead corporation"))
+        {
+            await Task.Delay(1000);
+        }
     }
 }

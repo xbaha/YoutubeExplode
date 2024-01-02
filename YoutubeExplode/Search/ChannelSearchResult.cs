@@ -32,7 +32,7 @@ public class ChannelSearchResult : ISearchResult, IChannel
         ChannelId id,
         string title,
         IReadOnlyList<Thumbnail> thumbnails,
-        long? subscriberCount
+        ulong? subscriberCount
     )
     {
         Id = id;
