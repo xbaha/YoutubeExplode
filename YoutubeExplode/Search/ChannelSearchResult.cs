@@ -28,7 +28,12 @@ public class ChannelSearchResult : ISearchResult, IChannel
     /// <summary>
     /// Initializes an instance of <see cref="ChannelSearchResult" />.
     /// </summary>
-    public ChannelSearchResult(ChannelId id, string title, IReadOnlyList<Thumbnail> thumbnails, long? subscriberCount)
+    public ChannelSearchResult(
+        ChannelId id,
+        string title,
+        IReadOnlyList<Thumbnail> thumbnails,
+        long? subscriberCount
+    )
     {
         Id = id;
         Title = title;

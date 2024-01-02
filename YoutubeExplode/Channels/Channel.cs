@@ -21,14 +21,23 @@ public class Channel : IChannel
     /// <inheritdoc />
     public IReadOnlyList<Thumbnail> Thumbnails { get; }
 
+    /// <inheritdoc />
+    public ulong? SubscriberCount { get; }
+
     /// <summary>
     /// Initializes an instance of <see cref="Channel" />.
     /// </summary>
-    public Channel(ChannelId id, string title, IReadOnlyList<Thumbnail> thumbnails)
+    public Channel(
+        ChannelId id,
+        string title,
+        IReadOnlyList<Thumbnail> thumbnails,
+        ulong? subscriberCount
+    )
     {
         Id = id;
         Title = title;
         Thumbnails = thumbnails;
+        SubscriberCount = subscriberCount;
     }
 
     /// <inheritdoc />

@@ -22,6 +22,25 @@ internal partial class ChannelPage(IHtmlDocument content)
     [Lazy]
     public string? LogoUrl =>
         content.QuerySelector("meta[property=\"og:image\"]")?.GetAttribute("content");
+
+    [Lazy]
+    public ulong? SubscriberCount
+    {
+        get
+        {
+            var metaTag = content.QuerySelector("meta[property=\"og:subscriberCount\"]");
+            if (metaTag != null)
+            {
+                var attributeContent = metaTag.GetAttribute("content");
+                if (attributeContent != null && ulong.TryParse(attributeContent, out var subscriberCount))
+                {
+                    return subscriberCount;
+                }
+            }
+            return null;
+        }
+    }
+
 }
 
 internal partial class ChannelPage

@@ -219,11 +219,20 @@ public class SearchClient
 
                         var thumbnailResolution = new Resolution(thumbnailWidth, thumbnailHeight);
 
+                        var subsriberCount =
+                            channelData.SubscriberCount
+                            ?? throw new YoutubeExplodeException("failed to extract subcount");
+
                         return new Thumbnail(thumbnailUrl, thumbnailResolution);
                     })
                     .ToArray();
 
-                var channel = new ChannelSearchResult(channelId, channelTitle, channelThumbnails);
+                var channel = new ChannelSearchResult(
+                    channelId,
+                    channelTitle,
+                    channelThumbnails,
+                    subsriberCount
+                );
 
                 results.Add(channel);
             }

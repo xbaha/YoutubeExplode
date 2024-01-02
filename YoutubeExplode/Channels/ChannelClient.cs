@@ -54,7 +54,13 @@ public class ChannelClient
 
         var thumbnails = new[] { new Thumbnail(logoUrl, new Resolution(logoSize, logoSize)) };
 
-        return new Channel(channelId, title, thumbnails);
+        var subscriberCount =
+            channelPage.SubscriberCount
+            ?? throw new YoutubeExplodeException(
+                "Failed to extract the channel Subscribers count."
+            );
+
+        return new Channel(channelId, title, thumbnails, subscriberCount);
     }
 
     /// <summary>
@@ -77,7 +83,8 @@ public class ChannelClient
                         "https://www.gstatic.com/youtube/img/tvfilm/clapperboard_profile.png",
                         new Resolution(1024, 1024)
                     )
-                }
+                },
+                999
             );
         }
 

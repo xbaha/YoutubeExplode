@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text.Json;
 using Lazy;
@@ -167,6 +168,7 @@ internal partial class SearchResponse
 
 internal partial class SearchResponse
 {
+
     public class ChannelData(JsonElement content)
     {
         [Lazy]
@@ -191,6 +193,77 @@ internal partial class SearchResponse
                 ?.EnumerateArrayOrNull()
                 ?.Select(j => new ThumbnailData(j))
                 .ToArray() ?? Array.Empty<ThumbnailData>();
+
+        [Lazy]
+        public ulong? SubscriberCount =>
+            content
+                .GetPropertyOrNull("videoCountText")
+                ?.GetPropertyOrNull("simpleText")
+                ?.GetString()
+                ?.ConvertSubscriberCountTextToNumber();
+    }
+
+}
+
+
+/// <summary>
+/// Contains extension methods for the string class.
+/// </summary>
+public static class StringExtensions
+{
+    /// <summary>
+    /// Converts the subscriber count text to a number.
+    /// </summary>
+    /// <param name="subscriberCountText">The subscriber count text.</param>
+    /// <returns>The converted subscriber count number.</returns>
+    public static ulong? ConvertSubscriberCountTextToNumber(this string? subscriberCountText)
+    {
+        if (subscriberCountText == null)
+            return null;
+
+        // Split the text by spaces and take the first part which should contain the number and potential suffix.
+        var parts = subscriberCountText.Split(' ');
+        if (parts.Length == 0)
+            return null;
+
+        var filteredText = parts[0];
+
+        // Define the multipliers for K, M, and B.
+        var multipliers = new Dictionary<char, ulong>
+            {
+                { 'K', 1_000 },
+                { 'M', 1_000_000 },
+                { 'B', 1_000_000_000 }
+            };
+
+        // Check if the text ends with K, M, or B (case-insensitive) and multiply accordingly.
+        char lastChar = filteredText.LastOrDefault();
+        if (multipliers.TryGetValue(char.ToUpperInvariant(lastChar), out var multiplier))
+        {
+            filteredText = filteredText[0..^1]; // Remove the suffix
+            if (
+                decimal.TryParse(
+                    filteredText,
+                    NumberStyles.AllowDecimalPoint,
+                    CultureInfo.InvariantCulture,
+                    out var number
+                )
+            )
+            {
+                return (ulong)(number * multiplier);
+            }
+        }
+        else if (char.IsDigit(lastChar))
+        {
+            // If it's just a number without K, M, or B.
+            if (ulong.TryParse(filteredText, out var plainNumber))
+            {
+                return plainNumber;
+            }
+        }
+
+        // If parsing fails, return null.
+        return null;
     }
 }
 
