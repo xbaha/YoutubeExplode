@@ -17,6 +17,7 @@
     <PackageProjectUrl>https://github.com/xbaha/YoutubeExplode</PackageProjectUrl>
     <PackageTags>youtube video download playlist user channel with subscriber count closed caption tracks subtitles parse extract metadata info net core standard</PackageTags>
     <PackageReleaseNotes>https://github.com/xbaha/YoutubeExplode/releases/tag/$(Version)</PackageReleaseNotes>
+    <PackageId>YouTobeExplode-With-SubscriberCount</PackageId>
   </PropertyGroup>
 
   <ItemGroup>

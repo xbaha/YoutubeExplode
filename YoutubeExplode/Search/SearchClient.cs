@@ -223,9 +223,8 @@ public class SearchClient
                     })
                     .ToArray();
 
-                var subsriberCount =
-                    channelData.SubscriberCount;
-                    //?? throw new YoutubeExplodeException("failed to extract subcount");
+                var subsriberCount = channelData.SubscriberCount;
+                //?? throw new YoutubeExplodeException("failed to extract subcount");
 
                 var channel = new ChannelSearchResult(
                     channelId,
