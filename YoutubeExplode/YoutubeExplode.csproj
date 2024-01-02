@@ -8,6 +8,15 @@
   <PropertyGroup>
     <PackageIcon>favicon.png</PackageIcon>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <Title>YouTubeExplode_With_SubscriberCount</Title>
+    <Authors>Bob Mason</Authors>
+    <Company>hqcart</Company>
+    <Description>Forked from YouTube Explode to add SubscriberCount</Description>
+    <Copyright>Copyright (C) hqcart</Copyright>
+    <PackageProjectUrl>https://github.com/xbaha/YoutubeExplode</PackageProjectUrl>
+    <PackageTags>youtube video download playlist user channel with subscriber count closed caption tracks subtitles parse extract metadata info net core standard</PackageTags>
+    <PackageReleaseNotes>https://github.com/xbaha/YoutubeExplode/releases/tag/$(Version)</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>
