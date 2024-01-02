@@ -22,14 +22,18 @@ public class ChannelSearchResult : ISearchResult, IChannel
     /// <inheritdoc />
     public IReadOnlyList<Thumbnail> Thumbnails { get; }
 
+    /// <inheritdoc  cref="SubscriberCount" />
+    public ulong? SubscriberCount { get; }
+
     /// <summary>
     /// Initializes an instance of <see cref="ChannelSearchResult" />.
     /// </summary>
-    public ChannelSearchResult(ChannelId id, string title, IReadOnlyList<Thumbnail> thumbnails)
+    public ChannelSearchResult(ChannelId id, string title, IReadOnlyList<Thumbnail> thumbnails, long? subscriberCount)
     {
         Id = id;
         Title = title;
         Thumbnails = thumbnails;
+        SubscriberCount = subscriberCount;
     }
 
     /// <inheritdoc />
